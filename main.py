@@ -11,8 +11,6 @@ svc_am = load(open('models/svc_amharic.joblib','rb'))
 
 # flask app
 app = Flask(__name__)
-app = Flask(__name__, static_folder='static')
-
 
 from io import StringIO
 def read_csv_safe(file_path):
@@ -20,14 +18,6 @@ def read_csv_safe(file_path):
         content = f.read()
     decoded_content = content.decode('utf-8-sig', errors='replace')
     return pd.read_csv(StringIO(decoded_content), on_bad_lines='skip')  # Adjust the delimiter if needed
-all_symptoms = ['symptom1', 'symptom2', 'symptom3', 'symptom4', 'symptom5', 'symptom6', 'symptom7', 'symptom8', 'symptom9', 'symptom10', 'symptom11', 'symptom12', 'symptom13', 'symptom14', 'symptom15', 'symptom16', 'symptom17', 'symptom18', 'symptom19', 'symptom20', 'symptom21', 'symptom22', 'symptom23', 'symptom24', 'symptom25', 'symptom26', 'symptom27', 'symptom28', 'symptom29', 'symptom30', 'symptom31', 'symptom32', 'symptom33', 'symptom34', 'symptom35', 'symptom36', 'symptom37', 'symptom38', 'symptom39', 'symptom40', 'symptom41', 'symptom42', 'symptom43', 'symptom44', 'symptom45', 'symptom46', 'symptom47', 'symptom48', 'symptom49', 'symptom50', 'symptom51', 'symptom52', 'symptom53', 'symptom54', 'symptom55', 'symptom56', 'symptom57', 'symptom58', 'symptom59', 'symptom60', 'symptom61', 'symptom62', 'symptom63', 'symptom64', 'symptom65', 'symptom66', 'symptom67', 'symptom68', 'symptom69', 'symptom70', 'symptom71', 'symptom72', 'symptom73', 'symptom74', 'symptom75', 'symptom76', 'symptom77', 'symptom78', 'symptom79', 'symptom80', 'symptom81', 'symptom82', 'symptom83', 'symptom84', 'symptom85', 'symptom86', 'symptom87', 'symptom88', 'symptom89', 'symptom90', 'symptom91', 'symptom92', 'symptom93', 'symptom94', 'symptom95', 'symptom96', 'symptom97', 'symptom98', 'symptom99', 'symptom100', 'symptom101', 'symptom102', 'symptom103', 'symptom104', 'symptom105', 'symptom106', 'symptom107', 'symptom108', 'symptom109', 'symptom110', 'symptom111', 'symptom112', 'symptom113', 'symptom114', 'symptom115', 'symptom116', 'symptom117', 'symptom118', 'symptom119', 'symptom120', 'symptom121', 'symptom122', 'symptom123', 'symptom124', 'symptom125', 'symptom126', 'symptom127', 'symptom128', 'symptom129', 'symptom130', 'symptom131', 'symptom132']
-
-diseases_list = {
-    '0': 'Disease A',
-    '1': 'Disease B',
-    '2': 'Disease C'
-}
-
 
 def load_datasets(lang):
     global sym_des, precautions, workout, description, medications, diets, symptoms_dict, diseases_list
@@ -247,40 +237,50 @@ def get_predicted_value(patient_symptoms, lang):
 
 # creating routes========================================
 
-@app.route('/')
+
+@app.route("/")
 def index():
-    symptoms_dict = {
-        'itching': 0, 'skin_rash': 1, 'nodal_skin_eruptions': 2, 'continuous_sneezing': 3,
-        'shivering': 4, 'chills': 5, 'joint_pain': 6, 'sweating': 7, 'fatigue': 8, 'weight_loss': 9
-        # Add more symptoms as needed
-    }
-    selected_lang = request.args.get('language', 'en')  # Get selected language, default is 'en'
-    return render_template('index.html', selected_lang=selected_lang, symptoms_dict=symptoms_dict)
+    return render_template("index.html")
 
 # Define a route for the home page
 @app.route('/predict', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        symptoms = request.form.getlist('symptoms')
+        symptoms = request.form.get('symptoms')
         lang = request.form.get('language', 'en').strip()
         print(f"Language selected: {lang}")
         load_datasets(lang)
         
-        symptoms_dict = {symptom: 0 for symptom in all_symptoms}  # Initialize symptoms_dict
-        for symptom in symptoms:
-            if symptom in symptoms_dict:
-                symptoms_dict[symptom] = 1  # Set corresponding index to 1 if symptom is selected
-    
-        # Predict the disease using the model
-        if lang == "en":
-            prediction = svc_en.predict([list(symptoms_dict.values())])
-        else:
-            prediction = svc_am.predict([list(symptoms_dict.values())])
-
-        # Get the disease name from prediction
-        disease_name = diseases_list.get(str(prediction[0]), "Disease not found")
         
-        return render_template('index.html', disease=disease_name)
+        if not symptoms or symptoms == "Symptoms":
+            message = "Please enter symptoms" if lang == "en" else "እባክዎ ምልክቶችን ያስገቡ"
+            return render_template('index.html', message=message)
+        
+        # Split the user's input into a list of symptoms
+        user_symptoms = [s.strip() for s in symptoms.split(',') if s.strip()]
+        # Remove any extra characters
+        user_symptoms = [symptom.strip("[]' ") for symptom in user_symptoms]
+        
+        try:
+            # Get prediction using the appropriate language
+            predicted_disease = get_predicted_value(user_symptoms, lang)
+            dis_des, precautions, medications, rec_diet, workout = helper(predicted_disease)
+
+            my_precautions = []
+            for i in precautions[0]:
+                my_precautions.append(i)
+
+            return render_template('index.html', 
+                                predicted_disease=predicted_disease, 
+                                dis_des=dis_des,
+                                my_precautions=my_precautions, 
+                                medications=medications, 
+                                my_diet=rec_diet,
+                                workout=workout,
+                                selected_lang=lang)
+        except Exception as e:
+            message = f"Error in prediction: {str(e)}" if lang == "en" else f"በትንበያው ላይ ስህተት: {str(e)}"
+            return render_template('index.html', message=message)
 
     return render_template('index.html')
 
