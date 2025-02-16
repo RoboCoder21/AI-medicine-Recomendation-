@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Health Care Center</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    
   </head>
 
   <style>
     body {
-        background-image: url("/static/background.avif");
+        background-image: url("static/premium_photo-1673953509975-576678fa6710.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -168,7 +169,7 @@
 <h1 class="mt-4 my-4 text-center">Health Care Center</h1>
 <h1 class="mt-4 my-4 text-center">የጤና እንክብካቤ ማዕከል</h1>
 
-<div class="container my-4 mt-4" style="background: gray; color: white; border-radius: 15px; padding: 40px;">
+<div class="container my-4 mt-4" style="max-width: 40%; background: rgb(97, 95, 95); color: white; border-radius: 5px; padding: 20px;">
     <form action="/predict" method="post">
         <!-- Add language selector -->
         <div class="form-group mb-3">
@@ -183,17 +184,20 @@
             <label for="symptoms" id="symptomsLabel">Select Symptoms:</label>
             <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="type symptoms such as itching, sleeping, aching etc">
         </div>
-        <br>
  
-
-        <button type="submit" class="btn btn-lg" style="width: 100%; padding: 14px; margin-bottom: 5px; background-color: lightblue; color: white;">Predict</button>
-
+        <button type="submit" class="btn btn-lg" style="width: 100%; padding: 12px; margin-bottom: 5px; margin-top: 15px; background-color: lightblue; color: white;">Predict</button>
     </form>
 </div>
 
-
-
-
+<!-- 
+<div style="position: fixed; right: 20px; bottom: 20px; width: 300px; height: 500px;">
+   <iframe
+        src="https://www.chatbase.co/chatbot-iframe/gXtfsGFCe0VbkvEgiP18C"
+        width="100%"
+        style="height: 100%; min-height: 700px"
+        frameborder="10"
+   ></iframe> 
+</div> -->
 
 
 
@@ -372,9 +376,14 @@
 
         recognition.start();
     }
+
+    
 </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
+<script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="gXtfsGFCe0VbkvEgiP18C";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>
 
 </html>
