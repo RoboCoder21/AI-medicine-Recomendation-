@@ -1,1 +1,3 @@
-''' Welcome to our cutting-edge Personalized Medical Recommendation System, a powerful platform designed to assist users in understanding and managing their health. Leveraging the capabilities of machine learning, our system analyzes user-input symptoms to predict potential diseases accurately. '''
+''' Welcome to our cutting-edge Personalized Medical Recommendation System, a powerful platform designed to assist users in understanding and managing their health. Leveraging the capabilities of machine learning, our system analyzes user-input symptoms to predict potential diseases accurately. also this AI powerd system is worki in dual languages amharic and english 
+
+Users can give a symptoms with two languages then the system will pridct on that language'''
