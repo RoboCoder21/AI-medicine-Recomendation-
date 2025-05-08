@@ -2,4 +2,4 @@ In today's world, accessing reliable medical information can be overwhelming. Ma
 
 ![image alt](https://github.com/RoboCoder21/AI-medicine-Recomendation-/blob/e5bd14b8a0140e7407a0149b2586e79307bdf985/Screenshot%202025-02-17%20143639.png)
 
-![image alt](https://github.com/RoboCoder21/AI-medicine-Recomendation-/blob/cdfb72610318d981445310bf155bcb1a52aea1fa/Screenshot%202025-02-17%20143644.png)
+![image alt](https://github.com/RoboCoder21/AI-medicine-Recomendation-/blob/7d022569cdd9599f579862e04b44f584f7c6598b/Screenshot%202025-02-17%20143713.png)
